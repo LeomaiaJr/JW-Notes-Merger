@@ -15,6 +15,9 @@ const ThemeSelector: FunctionComponent = () => {
       onChange={(_, value) => {
         if (value) setTheme(value as 'light' | 'dark');
       }}
+      style={{
+        height: '40px',
+      }}
     >
       <ToggleButton value="light">
         <BrightnessHighIcon

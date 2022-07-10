@@ -1,19 +1,30 @@
-import { ThemeProvider } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import Stack from '@mui/material/Stack';
+import { ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
+import { useMemo } from 'react';
 import AppBar from './components/AppBar';
-import { AppThemeProvider, useAppTheme } from './hooks/useTheme';
+import CustomSnackbarProvider from './components/CustomSnackbarProvider';
+import { useAppTheme } from './hooks/useTheme';
+import UploadPage from './pages/UploadPage';
 import darkTheme from './theme/darkTheme';
 import lightTheme from './theme/lightTheme';
 import './translations/i18n';
 
 function App() {
-  const { t } = useTranslation('translation');
   const { theme } = useAppTheme();
 
+  const currentTheme = useMemo(
+    () => (theme === 'dark' ? darkTheme : lightTheme),
+    [theme]
+  );
+
   return (
-    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
-      <AppBar />
-      <p>{t('welcome')}</p>
+    <ThemeProvider theme={responsiveFontSizes(currentTheme)}>
+      <CustomSnackbarProvider>
+        <Stack height="100%" bgcolor={currentTheme.palette.background.default}>
+          <AppBar />
+          <UploadPage />
+        </Stack>
+      </CustomSnackbarProvider>
     </ThemeProvider>
   );
 }

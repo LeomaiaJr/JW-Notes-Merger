@@ -7,26 +7,46 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { FunctionComponent } from 'react';
 import ThemeSelector from '../ThemeSelector';
+import ReactCountryFlag from 'react-country-flag';
+import i18n from 'i18next';
 
 const AppBar: FunctionComponent = () => {
+  const changeCurrentLng = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <MuiAppBar position="static">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            textAlign="center"
-            sx={{ flexGrow: 1 }}
-          >
-            JW Notes Merger
-          </Typography>
-          <Box>
-            <ThemeSelector />
+    <MuiAppBar position="static">
+      <Toolbar>
+        <Typography
+          variant="h6"
+          component="div"
+          textAlign="center"
+          sx={{ flexGrow: 1 }}
+        >
+          JW Notes Merger
+        </Typography>
+        <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" mr={1}>
+            <IconButton
+              onClick={() => {
+                changeCurrentLng('en');
+              }}
+            >
+              <ReactCountryFlag countryCode="US" svg />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                changeCurrentLng('pt');
+              }}
+            >
+              <ReactCountryFlag countryCode="BR" svg />
+            </IconButton>
           </Box>
-        </Toolbar>
-      </MuiAppBar>
-    </Box>
+          <ThemeSelector />
+        </Box>
+      </Toolbar>
+    </MuiAppBar>
   );
 };
 
