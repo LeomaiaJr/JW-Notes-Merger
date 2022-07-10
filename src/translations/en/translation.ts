@@ -4,4 +4,9 @@ export const TRANSLATIONS_EN = {
   combine: 'Combine',
   uploadTitle: 'Select a backup file to upload',
   uploadSubtitle: 'or drag and drop it here',
+  error: {
+    download: 'Error downloading file, try again later',
+    fileExtension: 'Invalid file extension, only .jwlibrary files are accepted',
+  },
+  loading: "It's normal to take some time",
 };

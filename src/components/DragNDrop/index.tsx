@@ -27,7 +27,7 @@ const DragNDrop = ({ setFile, file }: DragNDropProps) => {
     const file = acceptedFiles[0];
 
     if (file.name.endsWith('.jwlibrary')) setFile(file);
-    else SnackbarUtils.error('Wrong file extension');
+    else SnackbarUtils.error(t('error.fileExtension'));
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -42,7 +42,7 @@ const DragNDrop = ({ setFile, file }: DragNDropProps) => {
               height: '25%',
             }}
           />
-          <Typography mt={1} variant="h6" fontWeight={700}>
+          <Typography mt={1} variant="h6" fontWeight={700} textAlign="center">
             {t('uploadTitle')}
           </Typography>
           <Typography

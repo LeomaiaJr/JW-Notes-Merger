@@ -6,12 +6,41 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DragNDrop from '../../components/DragNDrop';
 import { CustomDivider, Wrapper } from './styles';
+import axios from 'axios';
+import fileDownload from 'js-file-download';
+import SnackbarUtils from '../../utils/SnackbarUtils';
+import { CircularProgress } from '@mui/material';
 
 const UploadPage = () => {
   const { t } = useTranslation('translation');
 
   const [main, setMain] = useState<File | undefined>();
   const [toMerge, setToMerge] = useState<File | undefined>();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const sendFiles = async () => {
+    try {
+      setIsLoading(true);
+      if (main !== undefined && toMerge !== undefined) {
+        const formData = new FormData();
+        formData.append('main', main);
+        formData.append('toMerge', toMerge);
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_API_URL}/merge-db`,
+          formData,
+          {
+            responseType: 'blob',
+          }
+        );
+        fileDownload(data, 'merged.jwlibrary');
+      }
+    } catch {
+      SnackbarUtils.error(t('error.download'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Stack alignItems="center" mt="5%" height="100%">
@@ -24,16 +53,33 @@ const UploadPage = () => {
             <DragNDrop file={toMerge} setFile={setToMerge} />
           </Stack>
 
-          <Box mt={2} display="flex" justifyContent="flex-end">
-            <Button
-              variant="contained"
-              sx={{
-                textTransform: 'none',
-              }}
-            >
-              <Typography variant="body1">{t('combine')}</Typography>
-            </Button>
-          </Box>
+          {isLoading ? (
+            <Stack mt={2} display="flex" alignItems="center">
+              <Typography mb={1} variant="h6">
+                {t('loading')}
+              </Typography>
+              <CircularProgress />
+            </Stack>
+          ) : (
+            <Box mt={2} display="flex" justifyContent="flex-end">
+              <Button
+                disabled={main === undefined || toMerge === undefined}
+                variant="contained"
+                sx={{
+                  textTransform: 'none',
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  onClick={() => {
+                    sendFiles();
+                  }}
+                >
+                  {t('combine')}
+                </Typography>
+              </Button>
+            </Box>
+          )}
         </Stack>
       </Wrapper>
     </Stack>
