@@ -27,7 +27,7 @@ const UploadPage = () => {
         formData.append('main', main);
         formData.append('toMerge', toMerge);
         const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL}/merge-db`,
+          `http://144.22.234.28:1024/merge-db`,
           formData,
           {
             responseType: 'blob',
