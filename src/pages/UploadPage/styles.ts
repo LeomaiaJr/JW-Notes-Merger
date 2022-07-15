@@ -11,7 +11,7 @@ export const Wrapper = muiStyled(Stack)`
     color: ${theme.palette.text.primary};
     border-radius: 8px;
     padding: 32px;
-    height: 80%;
+    height: 85%;
     @media (max-width: 600px) {
       padding: 16px;
     }
